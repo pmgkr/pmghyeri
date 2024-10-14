@@ -7,11 +7,8 @@
 
     <!-- CSS -->
 	<link rel="stylesheet" type="text/css" href="/asset/css/common.css"  />
-	<link rel="stylesheet" type="text/css" href="/asset/css/w_style.css" />
-	<link rel="stylesheet" media="screen" href="/asset/css/m_style.css" >
-	<link rel="stylesheet" type="text/css" href="/asset/css/bootstrap.css" >
 </head>
 <body>
-    home.php
+    rental_status.php
 </body>
 </html>
