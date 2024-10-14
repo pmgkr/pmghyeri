@@ -70,9 +70,9 @@
                     </table>
                 </div>
                 <!-- 페이징 링크 표시 -->
-                <div>
+                <div class="pagination">
                     <?php if($current_page > 1):?>
-                        <a href="<?php echo site_url('book/' . ($current_page - 1)); ?>">Previous</a>
+                        <a href="<?php echo site_url('book/' . ($current_page - 1)); ?>"><</a>
                     <?php endif?>
                     <?php
                         // 10개의 페이지 링크를 생성
@@ -94,7 +94,7 @@
                    
 
                     <?php if ($current_page < $total_pages): ?>
-                        <a href="<?php echo site_url('book/' . ($current_page + 1)); ?>">Next</a>
+                        <a href="<?php echo site_url('book/' . ($current_page + 1)); ?>">></a>
                     <?php endif; ?>
                 </div>
             </section>

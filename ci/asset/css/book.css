@@ -59,8 +59,9 @@ header .wrap .right a{
 }
 .content .section .list{
     width: 100%;
-    max-height: 100%;
+    max-height: 95%;
     overflow-y: auto;
+    border-bottom: 1px solid #eee;
 }
 .content .section .list table{
     width: 100%;
@@ -97,4 +98,23 @@ th, tr, td{
 }
 .content .section .list .book_name{
     width: 30%;
+}
+.content .section .list .author,
+.content .section .list .publisher{
+    width: 20%;
+}
+.content .section .list .status,
+.content .section .list .borrow{
+    width: 10%;
+}
+.content .section .pagination{
+    text-align: center;
+    padding: 20px 0 0 ;
+}
+.content .section .pagination a{
+    padding: 5px;
+}
+.content .section .pagination a.active{
+    font-weight: 700;
+    color: #000;
 }
