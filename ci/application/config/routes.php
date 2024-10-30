@@ -52,6 +52,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'welcome'; //컨트롤러 파일 이름
 $route['book'] = 'Book_controller'; 
 $route['book/(:num)'] = 'Book_controller/index/$1'; 
-$route['rental_status'] = 'Book_controller/rental_status'; 
+$route['status'] = 'Book_controller/rental_status'; 
+$route['book/loan_ajax'] = 'Book_controller/loan_ajax';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
