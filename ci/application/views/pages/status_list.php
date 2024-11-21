@@ -44,7 +44,7 @@
         <div class="content">
             <section class="section">
                 <!-- 검색 폼 추가 -->
-                <form action="/book" method="get" class="search_form">
+                <form action="/status" method="get" class="search_form">
                     <input type="text" name="search" placeholder="검색어를 입력하세요" value="<?= isset($search_query) ? htmlspecialchars($search_query) : '' ?>">
                     <button type="submit" class="search_btn">
                         <i class="ico_search"></i>
@@ -57,46 +57,50 @@
                                 <th class="num">No</th>
                                 <th class="book_name">책 제목</th>
                                 <th class="author">저자</th>
-                                <th class="publisher">출판사</th>
-                                <th class="status">상태</th>
-                                <th class="borrow">대출-예약</th>
+                                <th class="publisher">상태</th>
+                                <th class="date_b">대출일</th>
+                                <th class="date_r">반납기한</th>
+                                <th class="borrow">대출-반납</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if (empty($books)): ?>
+                            <?php if (empty($loans)): ?>
                                 <tr>
-                                    <td colspan="6">검색 결과가 없습니다.</td>
+                                    <td colspan="7">검색 결과가 없습니다.</td>
                                 </tr>
                             <?php else: ?>    
-                                <?php foreach($books as $book) :?>
+                                <?php foreach($loans as $loan) :?>
                                     <tr>
-                                        <td><?=$book->seq?></td>
-                                        <td><?=$book->book_name?></td>
-                                        <td><?=$book->author?></td>
-                                        <td><?=$book->publisher?></td>
+                                        <td><?=$loan->seq?></td>
+                                        <td><?=$loan->book_name?></td>
+                                        <td><?=$loan->author?></td>
                                         <td>
-                                            <?php if($book->status == 'available'): ?>
-                                                대출 가능
-                                            <?php elseif($book->status == 'inspect'): ?>
-                                                점검 중
-                                            <?php else: ?>
-                                                대출 중
+                                            <?php if($loan->status == 'borrowed'): ?>
+                                                대출중
+                                            <?php elseif($loan->status == 'reserve'): ?>
+                                                예약중
+                                            <?php elseif($loan->status == 'return'): ?>
+                                                반납 완료
                                             <?php endif; ?>
                                         </td>
+                                        <td><?=$loan->loan_date?></td>
+                                        <td><?= date('Y-m-d', strtotime($loan->return_date)) ?></td>
                                         <td>
-                                            <?php if ($book->status == 'available'): ?>
-                                                <button class="btn btn-primary" 
-                                                        onclick="confirmLoan('<?= htmlspecialchars($book->seq, ENT_QUOTES) ?>', '<?= htmlspecialchars($book->book_name, ENT_QUOTES) ?>')">
-                                                    대출하기
-                                                </button>
-                                            <?php elseif ($book->status == 'borrowed'): ?>
-                                                <!-- 대출 된 도서 예약 하기 버튼 활성화 -->
-                                                <button class="btn btn-second" >예약하기</button>
-                                            <?php elseif ($book->status == 'inspect'): ?>
-                                                <!-- 대출 불가 시 비활성화된 버튼 -->
-                                                <button class="btn btn-third" disabled>대출불가</button>
+                                        <?php if ($loan->status == 'borrowed'): ?>
+                                            <button class="btn btn-fourth" 
+                                                    onclick="confirmReturn(<?=$loan->seq?>, '<?=$loan->book_name?>')">
+                                                반납 하기
+                                            </button>
+                                            <?php elseif ($loan->status == 'reserve'): ?>
+                                                <!-- 예약한 도서 대출하기 -->
+                                                <button class="btn btn-primary" >대출하기</button>
+                                            <?php elseif ($loan->status == 'return'): ?>
+                                                <!-- 반납 완료 -->
+                                                <button class="btn btn-second" style="cursor: auto;"  >반납 완료</button>
+                                                <div class="return-time">반납 시간: <?= date('Y-m-d H:i', strtotime($loan->return_time)) ?></div>
                                             <?php endif;?>
                                         </td>
+                                        
                                     </tr>
                                     
                                 <?php endforeach ?>
@@ -104,10 +108,10 @@
                         </tbody>
                     </table>
                 </div>
-                <!-- 페이징 링크 표시 -->
-                <div class="pagination">
+                 <!-- 페이징 링크 표시 -->
+                 <div class="pagination">
                     <?php if($current_page > 1):?>
-                        <a href="<?php echo site_url('book/' . ($current_page - 1)); ?>"><</a>
+                        <a href="<?php echo site_url('status/' . ($current_page - 1)); ?>"><</a>
                     <?php endif?>
                     <?php
                         // 10개의 페이지 링크를 생성
@@ -121,7 +125,7 @@
 
                         for ($i = $start_page; $i <= $end_page; $i++): 
                     ?>
-                    <a href="<?php echo site_url('book/' . $i . '?search=' . $search_query); ?>" 
+                    <a href="<?php echo site_url('status/' . $i . '?search=' . $search_query); ?>" 
                         <?php echo ($i == $current_page) ? 'class="active"' : ''; ?>>
                             <?php echo $i; ?>
                     </a>
@@ -129,7 +133,7 @@
                    
 
                     <?php if ($current_page < $total_pages): ?>
-                        <a href="<?php echo site_url('book/' . ($current_page + 1)); ?>">></a>
+                        <a href="<?php echo site_url('status/' . ($current_page + 1)); ?>">></a>
                     <?php endif; ?>
                 </div>
             </section>
@@ -140,28 +144,29 @@
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        function confirmLoan(bookSeq, bookName) {
+        function confirmReturn(bookSeq, bookName) {
             // 대출을 확인하는 confirm 창을 띄움
-            var userConfirm = confirm("["+bookName + "] 을(를) 대출하시겠습니까?");
+            var userConfirm = confirm("["+bookName + "] 을(를) 반납하시겠습니까?");
             
             if (userConfirm) {
                 // AJAX 요청을 통해 대출을 진행
                 $.ajax({
-                    url: '<?= site_url("book/loanA") ?>', // AJAX 처리를 위한 URL 
+                    url: '<?= site_url("book/return") ?>', // AJAX 처리를 위한 URL 
                     type: 'POST',
                     data: { book_seq: bookSeq },
                     success: function(response) {
-                        alert("["+bookName + "]  대출이 완료되었습니다.");
+                        alert("["+bookName + "]  반납이 완료되었습니다.");
                         location.reload();
                     },
                     error: function() {
-                        alert("대출 요청 중 오류가 발생했습니다. 다시 시도해주세요.");
+                        alert("반납 요청 중 오류가 발생했습니다. 다시 시도해주세요.");
                     }
                 });
             } else {
-                alert("대출이 취소되었습니다.");
+                alert("반납이 취소되었습니다.");
             }
         }
+
     </script>
 
 
