@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slide</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <section class="slide_01">
+        <h2>slide 1</h2>
+        <div class="wrap">
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                  <div class="swiper-slide">Slide 1</div>
+                  <div class="swiper-slide">Slide 2</div>
+                  <div class="swiper-slide">Slide 3</div>
+                  <div class="swiper-slide">Slide 4</div>
+                  <div class="swiper-slide">Slide 5</div>
+                  <div class="swiper-slide">Slide 6</div>
+                </div>
+              </div>
+            <div class="swiper-button-next pc_only"></div>
+            <div class="swiper-button-prev pc_only"></div>
+        </div>
+        
+    </section>
+
+    <section class="slide_02">
+        <h2>slide 2</h2>
+        <div class="wrap">
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">Slide 1</div>
+                    <div class="swiper-slide">Slide 2</div>
+                    <div class="swiper-slide">Slide 3</div>
+                    <div class="swiper-slide">Slide 4</div>
+                    <div class="swiper-slide">Slide 5</div>
+                    <div class="swiper-slide">Slide 6</div>
+                </div>
+                <div class="swiper-button-next pc_only"></div>
+                <div class="swiper-button-prev pc_only"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide_03">
+        <h2>slide 3</h2>
+        <div class="wrap">
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">Slide 1</div>
+                    <div class="swiper-slide">Slide 2</div>
+                    <div class="swiper-slide">Slide 3</div>
+                    <div class="swiper-slide">Slide 4</div>
+                </div>
+            </div>
+            <div class="tab">
+                <ul>
+                    <li class="on">슬라이드1</li>
+                    <li>슬라이드2</li>
+                    <li>슬라이드3</li>
+                    <li>슬라이드4</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        var swiper = new Swiper(".slide_01 .swiper", {
+            slidesPerView: 1.5,
+            spaceBetween: 24,
+            //loop: true,
+            pagination: {
+                clickable: true,
+            },
+            slidesOffsetBefore: 24,
+            slidesOffsetAfter: 24,
+            breakpoints: {
+                "768": {
+                    slidesPerView: 4,
+                    spaceBetween: 24,
+                    navigation: {
+                        nextEl: ".slide_01 .swiper-button-next",
+                        prevEl: ".slide_01 .swiper-button-prev",
+                    },
+                    slidesOffsetBefore: 0,
+                    slidesOffsetAfter: 0,
+                },
+            },
+        });
+
+        var swiper = new Swiper(".slide_02 .swiper", {
+            slidesPerView : "auto",
+            centeredSlides: true,
+            loop: true,
+            navigation: {
+                        nextEl: ".slide_02 .swiper-button-next",
+                        prevEl: ".slide_02 .swiper-button-prev",
+            },
+        });
+
+        var swiper03 = new Swiper(".slide_03 .swiper", {
+            slidesPerView: 1,
+            spaceBetween: 0,
+            loop: true,
+            loopFillGroupWithBlank: false,
+            effect:'fade',
+            speed: 900,
+            autoplay: {
+                delay: 4000,
+                disableOnInteraction: false,
+            },
+            on: {
+                slideChange: function () {
+                var Idx = this.realIndex;
+                $('.slide_03 .tab ul li').eq(Idx).addClass('on').siblings().removeClass('on');
+                },
+            },
+        });
+
+        $('.tab ul li').click(function () {
+        var $this = $(this);
+        var index = $this.index();
+        swiper03.slideTo(index, 300);
+        });
+
+        
+    </script>
+</body>
+</html>
