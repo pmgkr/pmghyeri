@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Slide</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <section class="slide_01">
@@ -92,7 +92,6 @@
 
     </section>
     
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
         var swiper = new Swiper(".slide_01 .swiper", {
@@ -133,7 +132,7 @@
             spaceBetween: 0,
             loop: true,
             loopFillGroupWithBlank: false,
-            effect:'fade',
+            effect: 'fade',
             speed: 900,
             autoplay: {
                 delay: 4000,
@@ -141,16 +140,26 @@
             },
             on: {
                 slideChange: function () {
-                var Idx = this.realIndex;
-                $('.slide_03 .tab ul li').eq(Idx).addClass('on').siblings().removeClass('on');
-                },
-            },
+                    var idx = this.realIndex;
+                    var tabItems = document.querySelectorAll('.slide_03 .tab ul li');
+
+                    tabItems.forEach(function (item, index) {
+                        if (index === idx) {
+                            item.classList.add('on');
+                        } else {
+                            item.classList.remove('on');
+                        }
+                    });
+                }
+            }
         });
 
-        $('.tab ul li').click(function () {
-        var $this = $(this);
-        var index = $this.index();
-        swiper03.slideTo(index, 300);
+        var tabItems = document.querySelectorAll('.tab ul li');
+
+        tabItems.forEach(function (item, index) {
+            item.addEventListener('click', function () {
+                swiper03.slideTo(index, 300);
+            });
         });
 
         const progressLine = document.querySelector('.autoplay-progress svg')
