@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -66,8 +66,33 @@
             </div>
         </div>
     </section>
+
+    <section class="slide_04">
+        <h2>slide 4</h2>
+        <div class="wrap">
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">Slide 1</div>
+                    <div class="swiper-slide">Slide 2</div>
+                    <div class="swiper-slide">Slide 3</div>
+                    <div class="swiper-slide">Slide 4</div>
+                </div>
+                <div class="progress-box">
+                    <div class="autoplay-progress">
+                        <svg viewBox="0 0 100 10">
+                            <line x1="0" y1="0" x2="100" y2="0">
+                        </svg>
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+            
+        </div>
+
+
+    </section>
     
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
         var swiper = new Swiper(".slide_01 .swiper", {
@@ -126,6 +151,25 @@
         var $this = $(this);
         var index = $this.index();
         swiper03.slideTo(index, 300);
+        });
+
+        const progressLine = document.querySelector('.autoplay-progress svg')
+        var swiper = new Swiper(".slide_04 .swiper", {
+            loop: true,
+            autoplay: {
+                delay: 4000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                type: "fraction",
+            },
+             // svg
+            on: {
+                autoplayTimeLeft(s, time, progress) {
+                    progressLine.style.setProperty("--progress", 1 - progress)
+                }
+            }
         });
 
         
