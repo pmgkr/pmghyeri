@@ -140,9 +140,11 @@
             },
             on: {
                 slideChange: function () {
+                    // 슬라이더의 활성화된 슬라이드 인덱스
                     var idx = this.realIndex;
                     var tabItems = document.querySelectorAll('.slide_03 .tab ul li');
 
+                    // 탭과 슬라이드 동기화
                     tabItems.forEach(function (item, index) {
                         if (index === idx) {
                             item.classList.add('on');
@@ -154,13 +156,16 @@
             }
         });
 
+        // 탭 클릭 
         var tabItems = document.querySelectorAll('.tab ul li');
 
         tabItems.forEach(function (item, index) {
             item.addEventListener('click', function () {
-                swiper03.slideTo(index, 300);
+                var slideIndex = index + swiper03.loopedSlides;  // 루프가 있는 경우 보정된 인덱스로 이동
+                swiper03.slideToLoop(index, 300);  // loopedSlides에 상관없이 정확한 슬라이드로 이동
             });
         });
+        
 
         const progressLine = document.querySelector('.autoplay-progress svg')
         var swiper = new Swiper(".slide_04 .swiper", {
