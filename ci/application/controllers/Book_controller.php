@@ -10,6 +10,8 @@
             $this->load->helper('url');
             //모델 파일과 연결
             $this->load->model('Book_model'); 
+            //세션로드
+            $this->load->library('session'); 
         }
 
         // controller : 모델에서 연결된 디비를 뷰에 어떻게 컨트롤하여 보여줄지
@@ -26,8 +28,10 @@
                 default:
                     show_404();
             }
+            
         }
         public function list() {
+            
             //검색어 받아오기
             $search_query = $this->input->get('search');
             //한 페이지에 보여줄 항목 수
@@ -54,19 +58,34 @@
             // 현재 페이지 넘버 설정
             $data['search_query'] = $search_query; // 뷰에 검색어 전달
             $data['current_page'] = $page;
+
+
+            // 세션 데이터 확인 (로그 기록)
+            log_message('debug', 'User name from session: ' . $this->session->userdata('user_name'));
+
+            // 세션에 데이터가 없을 경우 디버그 메시지 출력
+            if (!$this->session->userdata('user_name')) {
+                log_message('debug', 'No user_name found in session.');
+            }
+
+            $data['user_name'] = $this->session->userdata('user_name');
             
             //뷰 파일 로드
-
             $this->load->view('pages/book_list', $data);
         }
         
         //대출처리
         public function loanA() {
-            $book_seq = $this->input->post('book_seq');
-            $user_id = 'hyericha@pmgasia.com';
 
-            // 로그 기록 (CodeIgniter 로그 파일에 기록됨)
-            log_message('debug', "Received book_seq: " . $book_seq);
+            // 세션에서 사용자 이름과 이메일 가져오기
+            //$data['user_name'] = $this->session->userdata('user_name');
+            //$data['user_email'] = $this->session->userdata('user_email');
+
+
+            $book_seq = $this->input->post('book_seq');
+            //$user_id = $this->session->userdata('user_email'); 
+            $user_id = 'test@example.com';  
+
 
             $book = $this->Book_model->get_book_by_seq($book_seq); // `seq`로 도서 검색
             $book_name = $book->book_name; // 책 이름 저장

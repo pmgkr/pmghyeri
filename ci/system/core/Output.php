@@ -444,7 +444,10 @@ class CI_Output {
 		if ($this->parse_exec_vars === TRUE)
 		{
 			$memory	= round(memory_get_usage() / 1024 / 1024, 2).'MB';
-			$output = str_replace(array('{elapsed_time}', '{memory_usage}'), array($elapsed, $memory), $output);
+			//$output = str_replace(array('{elapsed_time}', '{memory_usage}'), array($elapsed, $memory), $output);
+			$search = $search ?? '';    // PHP 7.4 이상에서 Null 병합 연산자 사용
+			$replace = $replace ?? '';
+			$output = str_replace($search, $replace, $output ?? '');
 		}
 
 		// --------------------------------------------------------------------

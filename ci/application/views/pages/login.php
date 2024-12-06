@@ -23,7 +23,7 @@
 	<script type="text/javascript" src="//kobe.pmgasia.co.kr/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="//kobe.pmgasia.co.kr/js/ui.js"></script>
     
-   
+
 	
 </head>
 	
@@ -48,17 +48,20 @@
                     <br>
                     <button type="submit">Login</button>
                 </form>
-
 			</div>
 		</section>
 
         <!-- 로그인 실패 메시지 alert -->
-        <?php if ($this->session->flashdata('error')): ?>
-            <script type="text/javascript">
-                alert("<?= $this->session->flashdata('error') ?>");
-            </script>
-        <?php endif; ?>
+		<?php if ($this->session->flashdata('error')): ?>
+			<script>
+				window.onload = function() {
+					alert("<?= $this->session->flashdata('error'); ?>");
+				};
+			</script>
+		<?php endif; ?>
+        
 	</div>
+	
 
     <script>
            

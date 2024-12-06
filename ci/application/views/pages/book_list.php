@@ -12,7 +12,6 @@
 <body>
     <!-- Welcome to the show -->
     <div class="book">
-
         <!-- header -->
         <header>
             <div class="wrap">
@@ -33,12 +32,14 @@
                         <div class="profile_img">
                             <img src="/asset/images/profile.jpg" alt="profile">
                         </div>
-                        <span class="profile_name">홍길동</span>
+                        <span class="profile_name"><?= $this->session->userdata('user_name'); ?></span>
                     </a>
+                    <!-- 로그아웃 버튼 추가 -->
+                    <a href="/Login_controller/logout" class="logout-btn">Logout</a>
                 </div>
             </div>
         </header>
-        <!-- header -->
+        <!-- header --> 
 
         <!-- content -->
         <div class="content">
